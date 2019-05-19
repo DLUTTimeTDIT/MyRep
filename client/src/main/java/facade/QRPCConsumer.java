@@ -1,6 +1,6 @@
 package facade;
 
-import common.MetaData;
+import model.MetaData;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

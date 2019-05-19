@@ -1,11 +1,13 @@
 package facade;
 
-import common.MetaData;
-import constants.ProxyTypeEnum;
+import model.MetaData;
 import constants.SerializeTypeEnum;
+import container.ServiceSingletonContainer;
+import exception.QRPCException;
 import exception.ValidateException;
 import metadata.service.MetaDataService;
 import org.apache.commons.lang.StringUtils;
+import process.ProcessService;
 
 import javax.annotation.Resource;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -27,12 +29,14 @@ public class QRPCProvider {
     // 待提供服务对应的元数据
     private MetaData metaData = new MetaData();
 
+    // 主流程处理服务
+    private ProcessService processService = ServiceSingletonContainer.getInstance(ProcessService.class);
+
     public QRPCProvider() {
         // 设置初始值
         metaData.setVersion("1.0.0");
-        metaData.setExecuteTimeout(3000L);
+        metaData.setExecuteTimeout(3000);
         metaData.setIdleTimeout(20000L);
-        metaData.setProxyType(ProxyTypeEnum.JDK);
         metaData.setSerializeType(SerializeTypeEnum.PROTOTUF);
     }
 
@@ -55,11 +59,12 @@ public class QRPCProvider {
         // todo 各种校验
     }
 
-    private void publish(MetaData metaData){
+    private void publish(MetaData metaData) throws QRPCException {
         // 避免重复publish
         if(!isPublished.compareAndSet(false, true)){
             return;
         }
-        metaDataService.publish(metaData);
+        processService.publish(metaData);
+
     }
 }

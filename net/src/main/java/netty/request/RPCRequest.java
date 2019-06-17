@@ -103,7 +103,7 @@ public class RPCRequest extends BaseRequest {
         in.writeByte(RPCProtocol.VERSION);
         in.writeByte(RPCProtocol.REQUEST);
         in.writeByte(this.getCodecType());
-        in.readBytes(EXTEND_BYTES);
+        in.writeBytes(EXTEND_BYTES);
         in.writeLong(id);
         in.writeInt(timeout);
         in.writeInt(targetInstanceNameBytes.length);
@@ -111,6 +111,17 @@ public class RPCRequest extends BaseRequest {
         in.writeInt(requestArgTypesCount);
         for(byte[] requestArgType : requestArgTypes){
             in.writeInt(requestArgType.length);
+        }
+        if(requestObjects != null){
+            for(byte[] requestArg : requestObjects){
+                in.writeInt(requestArg.length);
+            }
+        }
+        in.writeInt(requestProps == null ? 0 : requestProps.length);
+        in.writeBytes(targetInstanceNameBytes);
+        in.writeBytes(methodNameBytes);
+        for(byte[] requestArgType : requestArgTypes){
+            in.writeBytes(requestArgType);
         }
         if(requestObjects != null){
             for(byte[] requestArg : requestObjects){

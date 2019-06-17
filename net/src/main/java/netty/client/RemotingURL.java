@@ -41,6 +41,10 @@ public final class RemotingURL {
     private final int timeout;
     private final byte serializeType;
 
+    public RemotingURL(String host, int port, Map<String, String> params){
+        this(null, null, host, port, null, params);
+    }
+
     public RemotingURL(String url, String protocol, String host, int port, String path, Map<String, String> parameters) {
         this.url = url;
         this.protocol = protocol;

@@ -6,6 +6,7 @@ import netty.request.RPCRequest;
 import netty.serialize.Encoder;
 import utils.ClassUtils;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -30,7 +31,7 @@ public class TransUtils {
         }
         byte[] requestProps = rpcRequest.getRequestProps();
         qrpcRequest.setMethodArgs(requestObjects);
-        Map<String, Object> properties = (Map<String, Object>) CodecTypeUtils.getDecoder(serializeType).decode(requestProps, Map.class);
+        Map<String, Object> properties = (Map<String, Object>) CodecTypeUtils.getDecoder(serializeType).decode(requestProps, HashMap.class);
         qrpcRequest.setFeatures(properties);
         return qrpcRequest;
     }

@@ -2,12 +2,14 @@ package container;
 
 import address.impl.AddressServiceImpl;
 import invoke.impl.InvokeServiceImpl;
+import metadata.service.impl.MetaDataServiceImpl;
 import netty.processor.impl.RpcRequestProcessorImpl;
 import process.impl.ProcessServiceImpl;
 import provider.impl.ProviderServiceImpl;
 import route.impl.ConsistentRouteServiceImpl;
 import route.impl.RandomRouteServiceImpl;
 import rpcprotocol.impl.RpcProtocolServiceImpl;
+import rpcprotocol.impl.RpcProtocolTemplateServiceImpl;
 
 import java.util.HashMap;
 
@@ -16,16 +18,20 @@ import java.util.HashMap;
  */
 public class ServiceSingletonContainer<T>  {
 
-    private static final HashMap<String, Object> SERVICE_CLASS_MAP = new HashMap<String, Object>(){{
-        put("process.impl.ProcessServiceImpl", new ProcessServiceImpl());
-        put("rpcprotocol.impl.RpcProtocolServiceImpl", new RpcProtocolServiceImpl());
-        put("provider.impl.ProviderServiceImpl", new ProviderServiceImpl());
-        put("netty.processor.impl.RpcRequestProcessorImpl", new RpcRequestProcessorImpl());
-        put("route.impl.RandomRouteServiceImpl", new RandomRouteServiceImpl());
-        put("route.impl.ConsistentRouteServiceImpl", new ConsistentRouteServiceImpl());
-        put("address.impl.AddressServiceImpl", new AddressServiceImpl());
-        put("invoke.impl.InvokeServiceImpl", new InvokeServiceImpl());
-    }};
+    private static final HashMap<String, Object> SERVICE_CLASS_MAP = new HashMap<>();
+
+    static{
+        SERVICE_CLASS_MAP.put(ConsistentRouteServiceImpl.class.getName(), new ConsistentRouteServiceImpl());
+        SERVICE_CLASS_MAP.put(InvokeServiceImpl.class.getName(), new InvokeServiceImpl());
+        SERVICE_CLASS_MAP.put(RpcRequestProcessorImpl.class.getName(), new RpcRequestProcessorImpl());
+        SERVICE_CLASS_MAP.put(MetaDataServiceImpl.class.getName(), new MetaDataServiceImpl());
+        SERVICE_CLASS_MAP.put(ProviderServiceImpl.class.getName(), new ProviderServiceImpl());
+        SERVICE_CLASS_MAP.put(RpcProtocolServiceImpl.class.getName(), new RpcProtocolServiceImpl());
+        SERVICE_CLASS_MAP.put(ProcessServiceImpl.class.getName(), new ProcessServiceImpl());
+        SERVICE_CLASS_MAP.put(RandomRouteServiceImpl.class.getName(), new RandomRouteServiceImpl());
+        SERVICE_CLASS_MAP.put(AddressServiceImpl.class.getName(), new AddressServiceImpl());
+        SERVICE_CLASS_MAP.put(RpcProtocolTemplateServiceImpl.class.getName(), new RpcProtocolTemplateServiceImpl());
+    };
 
     /**
      * 获取对应类的单例

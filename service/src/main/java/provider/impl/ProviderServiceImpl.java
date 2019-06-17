@@ -48,6 +48,7 @@ public class ProviderServiceImpl implements ProviderService {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("qprc  server started:port" + SERVER_PORT + " I/O thread counts:" + Runtime.getRuntime().availableProcessors() + 1)
                 .append(" minPoolSize:").append(ConfigServer.MIN_POOL_SIZE).append(" maxPoolSize:").append(ConfigServer.MAX_POOL_SIZE);
+        System.out.println(stringBuilder.toString());
     }
 
     public void signalClosingServer() {

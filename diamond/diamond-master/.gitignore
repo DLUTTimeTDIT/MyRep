@@ -1,0 +1,6 @@
+.project
+.svn
+.idea
+*.iml
+target/
+*.log

@@ -38,7 +38,7 @@ public class ProviderServiceModel {
         for(Method method : methods){
             method.setAccessible(true);
 
-            List<ProviderMethodModel> methodModels = this.methods.putIfAbsent(method.getName(), new ArrayList<ProviderMethodModel>(){{
+            this.methods.putIfAbsent(method.getName(), new ArrayList<ProviderMethodModel>(){{
                 add(new ProviderMethodModel(method, serviceName, metaData.getExecuteTimeout()));
             }});
         }
@@ -50,9 +50,11 @@ public class ProviderServiceModel {
             System.out.println("服务端无该方法"+methodName);
             return null;
         }
-        methodModels.forEach(providerMethodModel -> {
-            if(Arrays.equals(argTypes, providerMethodModel.getMethodArgTypes()));
-        });
+        for (ProviderMethodModel providerMethodModel : methodModels) {
+            if (Arrays.equals(argTypes, providerMethodModel.getMethodArgTypes())) {
+                return providerMethodModel;
+            }
+        }
         return null;
     }
 

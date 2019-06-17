@@ -33,7 +33,7 @@ public class RpcRequestProcessorImpl implements RpcRequestProcessor {
 
     private static final String UNKOWN = "unknown";
 
-    private static final boolean needLimit = true;
+    private static final boolean needLimit = false;
 
     private static final int QRPC_SERVER_COOR_POOL_SIZE = 50;
 
@@ -129,7 +129,7 @@ public class RpcRequestProcessorImpl implements RpcRequestProcessor {
     private QRPCResponse doHandleRequest(QRPCRequest qrpcRequest, Connection connection){
         final QRPCResponse qrpcResponse = new QRPCResponse();
         if(needLimit){
-            if(tryAcquire()){
+            if(!tryAcquire()){
                 // 被限流
                 qrpcResponse.setErrorType("Rate limit");
                 qrpcResponse.setErrorMsg("request has been limited");
@@ -146,8 +146,6 @@ public class RpcRequestProcessorImpl implements RpcRequestProcessor {
             qrpcResponse.setErrorType("service doesn't exist");
             return qrpcResponse;
         }
-
-        System.out.println("服务开始执行");
 
         String[] argTypes = qrpcRequest.getMethodParamTypes();
         boolean isGeneric = false;

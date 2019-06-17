@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="testService" class="facade.QRPCSpringConsumer" init-method="init">
+        <property name="interfaceName" value="testservice.TestService"/>
+        <property name="version" value="1.0.0"/>
+    </bean>
+
+
+    <bean id="testServiceBean" class="testservice.impl.TestServiceImpl"/>
+    <bean id="testServiceProvider" class="facade.QRPCSpringProvider" init-method="init">
+        <property name="interfaceName" value="testservice.TestService"/>
+        <property name="version" value="1.0.0"/>
+        <property name="target" value=""/>
+    </bean>
+</beans>

@@ -31,7 +31,7 @@ public class RPCServerHandler implements ServerHandler<RPCRequest> {
         } catch (Exception e) {
             try {
                 connection.writeResponseToChannel(new RPCResponse(request.getRequestId(), request.getCodecType(),
-                        ResponseStatus.SERVER_ERROR, "unknown error happens".getBytes(Encoder.CHAR_SET)));
+                        ResponseStatus.SERVER_ERROR, e.getCause().getMessage().getBytes(Encoder.CHAR_SET)));
             } catch (UnsupportedEncodingException e1) {
                 System.out.println("该机器不支持utf-8编码");
             }

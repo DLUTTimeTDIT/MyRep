@@ -54,8 +54,8 @@ public final class NettyClientFactory extends AbstractClientFactory {
                 .handler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
-                        ch.pipeline().addLast("decoder", new NettyProtocolDecoder())
-                                .addLast("encoder", new NettyProtocolEncoder())
+                        ch.pipeline().addLast("encoder", new NettyProtocolEncoder())
+                                .addLast("decoder", new NettyProtocolDecoder())
                                 .addLast("handler", handler);
                     }
                 });

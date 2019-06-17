@@ -8,6 +8,8 @@ import exception.ValidateException;
 import metadata.service.MetaDataService;
 import org.apache.commons.lang.StringUtils;
 import process.ProcessService;
+import process.impl.ProcessServiceImpl;
+import utils.ClassUtils;
 
 import javax.annotation.Resource;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -30,14 +32,14 @@ public class QRPCProvider {
     private MetaData metaData = new MetaData();
 
     // 主流程处理服务
-    private ProcessService processService = ServiceSingletonContainer.getInstance(ProcessService.class);
+    private ProcessService processService = ServiceSingletonContainer.getInstance(ProcessServiceImpl.class);
 
     public QRPCProvider() {
         // 设置初始值
         metaData.setVersion("1.0.0");
         metaData.setExecuteTimeout(3000);
         metaData.setIdleTimeout(20000L);
-        metaData.setSerializeType(SerializeTypeEnum.PROTOTUF);
+        metaData.setSerializeType(SerializeTypeEnum.KRYO.getType());
     }
 
     /**
@@ -52,11 +54,28 @@ public class QRPCProvider {
         this.publish(metaData);
     }
 
+    public void setInterfaceName(String interfaceName){
+        metaData.setInterfaceName(interfaceName);
+        try {
+            metaData.setInterfaceClazz(ClassUtils.name2class(interfaceName));
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException("请检查接口名是否正确:" + interfaceName);
+        }
+        metaData.setUniqueName(interfaceName + this.metaData.getVersion());
+    }
+
+    public void setTarget(Object target){
+        metaData.setTarget(target);
+    }
+
+    public void setVersion(String version){
+        metaData.setVersion(version);
+    }
+
     private void validate() throws ValidateException {
         if(StringUtils.isEmpty(metaData.getInterfaceName())){
             throw new ValidateException("接口名称为空！");
         }
-        // todo 各种校验
     }
 
     private void publish(MetaData metaData) throws QRPCException {

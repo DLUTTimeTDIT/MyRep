@@ -25,6 +25,11 @@ public class ClassUtils {
     }
 
     public static Class<?> name2class(String className) throws ClassNotFoundException {
-        return cache.putIfAbsent(className, Class.forName(className));
+        Class<?> clazz = cache.get(className);
+        if(clazz == null){
+            clazz = Class.forName(className);
+            cache.put(className, clazz);
+        }
+        return clazz;
     }
 }

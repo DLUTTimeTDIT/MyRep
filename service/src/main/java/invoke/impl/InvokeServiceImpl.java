@@ -28,7 +28,9 @@ public class InvokeServiceImpl implements InvokeService {
         QRPCResponse qrpcResponse = null;
         try{
             Client client = clientFactory.get(remotingURL);
-            Future<Object> future = client.invoke(qrpcRequest, remotingURL.getSerializeType(), consumerMethodModel.getMetaData().getExecuteTimeout());
+            // todo 为了调试 把时延设长一点
+//            Future<Object> future = client.invoke(qrpcRequest, remotingURL.getSerializeType(), consumerMethodModel.getMetaData().getExecuteTimeout());
+            Future<Object> future = client.invoke(qrpcRequest, remotingURL.getSerializeType(), Integer.MAX_VALUE);
             qrpcResponse = (QRPCResponse) (future.get(timeout, TimeUnit.MILLISECONDS));
         } catch (TimeoutException e) {
             throw new RuntimeException(new QRPCTimeoutException(e.getMessage() + " timeout:" + timeout, e));

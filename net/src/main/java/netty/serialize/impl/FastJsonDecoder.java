@@ -11,6 +11,6 @@ public class FastJsonDecoder implements Decoder {
 
     @Override
     public Object decode(byte[] bytes) throws Exception {
-        return JSON.parseObject(new String(bytes));
+        return JSON.parse(new String(bytes));
     }
 }

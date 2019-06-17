@@ -38,7 +38,7 @@ public class MetaData {
     /**
      * 序列化方式
      */
-    private SerializeTypeEnum serializeType;
+    private byte serializeType;
 
     /**
      * 服务唯一标识名字
@@ -120,14 +120,6 @@ public class MetaData {
 
     public void setIdleTimeout(Long idleTimeout) {
         IdleTimeout = idleTimeout;
-    }
-
-    public SerializeTypeEnum getSerializeType() {
-        return serializeType;
-    }
-
-    public void setSerializeType(SerializeTypeEnum serializeType) {
-        this.serializeType = serializeType;
     }
 
     public String getUniqueName() {
@@ -214,5 +206,13 @@ public class MetaData {
 
     public void setConnectionNum(int connectionNum) {
         this.connectionNum = connectionNum;
+    }
+
+    public byte getSerializeType() {
+        return serializeType;
+    }
+
+    public void setSerializeType(byte serializeType) {
+        this.serializeType = serializeType;
     }
 }

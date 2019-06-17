@@ -2,6 +2,7 @@ package rpcprotocol.impl;
 
 import address.AddressService;
 import address.impl.AddressServiceImpl;
+import config.ConfigServer;
 import container.ServiceSingletonContainer;
 import context.InvokerContext;
 import exception.QRPCTimeoutException;
@@ -18,7 +19,9 @@ import rpcprotocol.RpcProtocolTemplateService;
 import utils.ThreadLocalUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class RpcProtocolTemplateServiceImpl implements RpcProtocolTemplateService {
@@ -50,6 +53,7 @@ public class RpcProtocolTemplateServiceImpl implements RpcProtocolTemplateServic
             if(t.getCause() instanceof QRPCTimeoutException){
                 errorMsg = "service:" + serviceName + " methodName:" + methodName + "invoke timeout:" + (System.currentTimeMillis() - beginTime);
             } else{
+                t.printStackTrace();
                 errorMsg = "service:" + serviceName + " methodName:" + methodName + "invoke error:" + t.getCause().getMessage();
             }
             System.out.println(errorMsg);
@@ -166,7 +170,7 @@ public class RpcProtocolTemplateServiceImpl implements RpcProtocolTemplateServic
                 continue;
             }
             urls.forEach(url->{
-                RemotingURL remotingURL = this.validateTarget(url, metaData.getConnectionIndex());
+                RemotingURL remotingURL = this.validateTarget(url, metaData.getSerializeType());
                 if(remotingURL == null){
                     if(url.length() > 0){
                         System.out.println("RpcProtocolTemplateServiceImpl#selectAndValidateAddress invalid address");
@@ -190,7 +194,7 @@ public class RpcProtocolTemplateServiceImpl implements RpcProtocolTemplateServic
             if(targetUrl == null){
                 continue;
             }
-            RemotingURL remotingURL = this.validateTarget(targetUrl, connectionIndex);
+            RemotingURL remotingURL = this.validateTarget(targetUrl, metaData.getSerializeType());
             if(remotingURL == null){
                 if(targetUrl.length() > 0){
                     System.out.println("RpcProtocolTemplateServiceImpl#selectAndValidateAddress invalid address" + targetUrl);
@@ -203,8 +207,11 @@ public class RpcProtocolTemplateServiceImpl implements RpcProtocolTemplateServic
         return null;
     }
 
-    private RemotingURL validateTarget(String url, int connectionIndex){
-        RemotingURL remotingURL = RemotingURL.valueOf(url, connectionIndex);
+    private RemotingURL validateTarget(String url, byte serializeType){
+//        RemotingURL remotingURL = RemotingURL.valueOf(url, connectionIndex);
+        Map<String, String> params = new HashMap<>();
+        params.put(RemotingURL.SERIALIZE_TYPE, String.valueOf(serializeType));
+        RemotingURL remotingURL = new RemotingURL(url, ConfigServer.SERVER_PORT, params);
         try {
             return clientFactory.get(remotingURL) != null ? remotingURL : null;
         } catch (ExecutionException e) {

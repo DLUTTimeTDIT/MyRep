@@ -19,6 +19,10 @@
             <groupId>com.shuqi</groupId>
             <artifactId>net</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.taobao.diamond</groupId>
+            <artifactId>diamond-client</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

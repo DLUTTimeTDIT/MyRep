@@ -5,6 +5,7 @@ import com.google.common.cache.CacheBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -22,8 +23,8 @@ public abstract class AbstractClientFactory implements ClientFactory {
     @Override
     public Client get(RemotingURL remotingURL) throws ExecutionException {
         Client client = cache.get(remotingURL, () -> {
-            Client client1 = createClient(remotingURL);
-            if(client1 != null){
+            Client client1 = AbstractClientFactory.this.createClient(remotingURL);
+            if (client1 != null) {
                 client1.startHeartBeat();
             }
             return client1;

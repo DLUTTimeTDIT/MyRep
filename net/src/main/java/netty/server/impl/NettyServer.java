@@ -83,7 +83,7 @@ public class NettyServer implements Server {
         int tryTimes = 3;
         for(int i = 0; i < tryTimes; i++){
             ChannelFuture channelFuture = serverBootstrap.bind(new InetSocketAddress(bindHost, port));
-            channelFuture.wait();
+            channelFuture.await();
             if(channelFuture.isSuccess()){
                 System.out.println("server started, host:" + bindHost + ", port:" + port);
                 return;

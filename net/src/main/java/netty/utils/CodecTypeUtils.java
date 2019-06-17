@@ -34,14 +34,14 @@ public class CodecTypeUtils {
 
         addEncoder(HESSIAN2_CODEC, ENCODER);
         addEncoder(JAVA_CODEC, new JavaEncoder());
-        addEncoder(KRYO_CODEC, new KyroEncoder());
+        addEncoder(KRYO_CODEC, new KryoEncoder());
         addEncoder(JSON_CODEC, new FastJsonEncoder());
 
         DECODER = new Hessian2Decoder();
 
         addDecoders(HESSIAN2_CODEC, DECODER);
         addDecoders(JAVA_CODEC, new JavaDecoder());
-        addDecoders(KRYO_CODEC, new KyroDecoder());
+        addDecoders(KRYO_CODEC, new KryoDecoder());
         addDecoders(JSON_CODEC, new FastJsonDecoder());
     }
 

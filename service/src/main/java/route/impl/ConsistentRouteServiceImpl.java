@@ -45,7 +45,7 @@ public class ConsistentRouteServiceImpl implements RouteService {
         }
         //virtualNode虚拟节点名称要截取一下
         if(StringUtils.isNotBlank(virtualNode)){
-            return virtualNode.substring(0, virtualNode.indexOf("&&"));
+            return virtualNode.substring(0, virtualNode.indexOf("$"));
         }
         return null;
 

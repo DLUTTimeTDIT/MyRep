@@ -40,7 +40,7 @@ public class NamedThreadFactory implements ThreadFactory {
 
     @Override
     public Thread newThread(Runnable r) {
-        Thread thread = new Thread(prefix + threadNumber.getAndIncrement());
+        Thread thread = new Thread(r, prefix + threadNumber.getAndIncrement());
 
         thread.setContextClassLoader(NamedThreadFactory.class.getClassLoader());
         thread.setPriority(Thread.MAX_PRIORITY);

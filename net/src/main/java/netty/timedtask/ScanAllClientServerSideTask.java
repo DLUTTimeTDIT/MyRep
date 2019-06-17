@@ -6,6 +6,7 @@ import io.netty.util.Timeout;
 import io.netty.util.TimerTask;
 import netty.connection.Connection;
 import netty.handler.NettyServerHandler;
+import netty.utils.CommonVar;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -14,8 +15,6 @@ import java.util.concurrent.TimeUnit;
  * 扫描所有连接的任务线程
  */
 public class ScanAllClientServerSideTask implements TimerTask {
-
-    private static final String TIMER_THREAD_POOL_NAME = "nettyTimer";
 
     private static final long THRESHOLD_TIME = 59000;
 
@@ -31,7 +30,7 @@ public class ScanAllClientServerSideTask implements TimerTask {
             List<Connection> connections = serverHandler.getConnections();
             if(connections != null){
                 for(final Connection connection : connections){
-                    if(now - connection.getLastReadTime() > 59000){
+                    if(now - connection.getLastReadTime() > THRESHOLD_TIME){
                         System.out.println("connection " + connection + " will be closed by server");
                         connection.close();
                     }
@@ -41,7 +40,7 @@ public class ScanAllClientServerSideTask implements TimerTask {
         catch (Throwable throwable){
             System.out.println("scan client task error");
         } finally {
-            new HashedWheelTimer(new NamedThreadFactory(TIMER_THREAD_POOL_NAME)).newTimeout(this, 59, TimeUnit.SECONDS);
+            CommonVar.timer.newTimeout(this, 59, TimeUnit.SECONDS);
         }
     }
 }
